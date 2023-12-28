@@ -22,11 +22,13 @@
 #include "absl/status/status.h"
 #include "absl/status/statusor.h"
 #include "absl/strings/string_view.h"
-#include "cc/transport/transport.h"
+#include "ac/transport/transport.h"
 #include "oak_crypto/proto/v1/crypto.pb.h"
 #include "oak_remote_attestation/proto/v1/messages.pb.h"
 #include "oak_remote_attestation/proto/v1/service_streaming.grpc.pb.h"
 #include "oak_remote_attestation/proto/v1/service_streaming.pb.h"
+#include "third_party/absl/base/call_once.h"
+#include "third_party/grpc/include/grpcpp/support/sync_stream.h"
 
 namespace oak::transport {
 

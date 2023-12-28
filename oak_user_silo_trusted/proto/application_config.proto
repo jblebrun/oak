@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package oak.containers.user_silo;
+
+message ApplicationConfig {
+    // If this is true, the applicatoin will expect an embedding model to be sent.
+    // Set to false for faster integration tests with a dummy embedding model.
+    bool expect_model = 1;
+}

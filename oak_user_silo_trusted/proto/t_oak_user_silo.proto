@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+// The service definition and related messages for a trusted implementation
+// of the Oak User Silo memory service.
+//
+
+package oak.containers.user_silo;
+
+import "oak_crypto/proto/v1/crypto.proto";
+
+// An encrypted action for Oak, exposed to the untrusted app shell.
+message TInvokeRequest {
+  // An .oak.crypto.v1.EncryptedRequest message that should contain a single
+  // OakUserSiloRequest message.
+  oak.crypto.v1.EncryptedRequest encrypted_request = 1;
+}
+
+// An encrypted response from a TInvokeRequest action.
+message TInvokeResponse {
+  // An .oak.crypto.v1.EncryptedResponse message containing the corresponding
+  // response to an action invocation.
+  oak.crypto.v1.EncryptedResponse encrypted_response = 1;
+}
+
+// An encrypted service for interacting with neural memories, the API exposed
+// from the trusted portion of the app to the untrusted portion.
+service TOakUserSilo {
+  // Invoke one of the messages from
+  rpc TInvoke(TInvokeRequest) returns (TInvokeResponse);
+}

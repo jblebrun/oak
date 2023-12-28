@@ -2611,6 +2611,27 @@ dependencies = [
 ]
 
 [[package]]
+name = "oak_user_silo_trusted"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "async-stream",
+ "async-trait",
+ "bytes",
+ "env_logger",
+ "log",
+ "oak_crypto",
+ "oak_grpc_utils",
+ "oak_remote_attestation",
+ "prost",
+ "prost-types",
+ "tokio",
+ "tokio-stream",
+ "tonic",
+ "tower",
+]
+
+[[package]]
 name = "oak_virtio"
 version = "0.1.0"
 dependencies = [

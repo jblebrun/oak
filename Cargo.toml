@@ -50,6 +50,7 @@ members = [
   "oak_sev_guest",
   "oak_simple_io",
   "oak_tdx_guest",
+  "oak_user_silo_trusted",
   "oak_virtio",
   "sev_serial",
   "snp_measurement",
