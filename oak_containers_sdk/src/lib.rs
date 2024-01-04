@@ -38,3 +38,6 @@ static IGNORED_ENDPOINT_URI: &str = "file://[::]:0";
 // Path used to facilitate inter-process communication between the orchestrator
 // and the trusted application.
 const ORCHESTRATOR_IPC_SOCKET: &str = "/oak_utils/orchestrator_ipc";
+
+// Reimport structs so that they are available at the top level of the SDK.
+pub use crypto::EncryptionKeyHandle;
