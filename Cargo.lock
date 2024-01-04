@@ -2211,6 +2211,7 @@ dependencies = [
  "http",
  "micro_rpc",
  "oak_containers_orchestrator_client",
+ "oak_containers_sdk",
  "oak_crypto",
  "oak_functions_service",
  "oak_functions_test_utils",
