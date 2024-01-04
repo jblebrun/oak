@@ -16,10 +16,25 @@
 mod proto {
     pub mod oak {
         pub mod containers {
-            #![allow(clippy::return_self_not_must_use)]
-            tonic::include_proto!("oak.containers");
+            pub mod v1 {
+                #![allow(clippy::return_self_not_must_use)]
+                tonic::include_proto!("oak.containers.v1");
+            }
         }
         pub use oak_crypto::proto::oak::crypto;
-        pub use oak_remote_attestation::proto::oak::{attestation, session};
+        // pub use oak_remote_attestation::proto::oak::{attestation, session};
     }
 }
+
+pub mod crypto;
+
+// Unix Domain Sockets do not use URIs, hence this URI will never be used.
+// It is defined purely since in order to create a channel, since a URI has to
+// be supplied to create an `Endpoint`. Even though in this case the endpoint
+// is technically a file, tonic expects us to provide our own connector, and
+// this ignored endpoint. :(
+static IGNORED_ENDPOINT_URI: &str = "file://[::]:0";
+
+// Path used to facilitate inter-process communication between the orchestrator
+// and the trusted application.
+const ORCHESTRATOR_IPC_SOCKET: &str = "/oak_utils/orchestrator_ipc";

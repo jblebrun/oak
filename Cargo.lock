@@ -1910,6 +1910,7 @@ dependencies = [
  "async-stream",
  "async-trait",
  "bytes",
+ "oak_containers_sdk",
  "oak_crypto",
  "oak_grpc_utils",
  "oak_remote_attestation",
