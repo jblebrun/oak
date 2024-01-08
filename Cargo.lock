@@ -2007,6 +2007,7 @@ dependencies = [
  "async-trait",
  "oak_crypto",
  "oak_grpc_utils",
+ "oak_remote_attestation",
  "prost",
  "prost-types",
  "tokio",
