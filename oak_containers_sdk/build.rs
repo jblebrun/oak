@@ -22,6 +22,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "../oak_containers/proto/interfaces.proto",
             "../oak_crypto/proto/v1/crypto.proto",
             "../proto/session/messages.proto",
+            "../proto/session/service_streaming.proto",
             "../proto/containers/orchestrator_crypto.proto",
         ],
         "..",

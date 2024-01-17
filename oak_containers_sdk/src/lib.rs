@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-mod proto {
+pub mod proto {
     pub mod oak {
         pub mod containers {
             tonic::include_proto!("oak.containers");
@@ -22,7 +22,12 @@ mod proto {
                 tonic::include_proto!("oak.containers.v1");
             }
         }
-        pub use oak_attestation::proto::oak::{attestation, session};
+        pub mod session {
+            pub mod v1 {
+                tonic::include_proto!("oak.session.v1");
+            }
+        }
+        pub use oak_attestation::proto::oak::attestation;
         pub use oak_crypto::proto::oak::crypto;
     }
 }
