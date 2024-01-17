@@ -66,6 +66,7 @@ pub struct Params {
     pub telnet_console: Option<u16>,
 }
 
+#[cfg(feature = "test-args")]
 impl Params {
     pub fn default_for_test() -> Self {
         let vmm_binary = which::which("qemu-system-x86_64").expect("could not find qemu path");

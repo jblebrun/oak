@@ -44,6 +44,7 @@ use clap::Parser;
 use oak_attestation::proto::oak::attestation::v1::{
     endorsements, Endorsements, Evidence, OakRestrictedKernelEndorsements,
 };
+pub use qemu::Params as QemuParams;
 use tokio::{
     net::TcpListener,
     sync::oneshot::{channel, Receiver, Sender},
@@ -74,15 +75,16 @@ const VM_START_TIMEOUT: u64 = 300;
 #[group(skip)]
 pub struct Args {
     #[arg(long, required = true, value_parser = path_exists,)]
-    system_image: std::path::PathBuf,
+    pub system_image: std::path::PathBuf,
     #[arg(long, required = true, value_parser = path_exists,)]
-    container_bundle: std::path::PathBuf,
+    pub container_bundle: std::path::PathBuf,
     #[arg(long, value_parser = path_exists,)]
-    application_config: Option<std::path::PathBuf>,
+    pub application_config: Option<std::path::PathBuf>,
     #[command(flatten)]
-    qemu_params: qemu::Params,
+    pub qemu_params: qemu::Params,
 }
 
+#[cfg(feature = "test-args")]
 impl Args {
     pub fn default_for_test() -> Self {
         let system_image = format!(

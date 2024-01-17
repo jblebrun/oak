@@ -5,6 +5,9 @@ authors = ["Juliette Pretot <julsh@google.com>"]
 edition = "2021"
 license = "Apache-2.0"
 
+[features]
+test-args = []
+
 [build-dependencies]
 oak_grpc_utils = { workspace = true }
 
