@@ -43,10 +43,11 @@ async fn hello_world() {
     // TODO(#4195): Stop dependencies from always being rebuilt.
     build_dependencies().expect("couldn't build dependencies");
 
-    let mut untrusted_app =
-        oak_containers_hello_world_untrusted_app::UntrustedApp::create(Args::default_for_test())
-            .await
-            .expect("could not create untrusted app");
+    let mut untrusted_app = oak_containers_hello_world_untrusted_app::UntrustedApp::create(
+        Args::default_for_root(env!("WORKSPACE_ROOT")),
+    )
+    .await
+    .expect("could not create untrusted app");
 
     let get_endorsed_evidence_result = untrusted_app.get_endorsed_evidence().await;
     assert!(get_endorsed_evidence_result.is_ok());
