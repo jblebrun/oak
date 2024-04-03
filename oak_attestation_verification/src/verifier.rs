@@ -37,15 +37,16 @@ use oak_proto_rust::oak::{
         ApplicationKeys, ApplicationLayerData, ApplicationLayerEndorsements,
         ApplicationLayerReferenceValues, AttestationResults, BinaryReferenceValue, CbData,
         CbEndorsements, CbReferenceValues, ContainerLayerData, ContainerLayerEndorsements,
-        ContainerLayerReferenceValues, Endorsements, Evidence, ExpectedDigests, ExtractedEvidence,
-        FakeAttestationReport, HexDigests, InsecureReferenceValues, IntelTdxAttestationReport,
-        IntelTdxReferenceValues, KernelAttachment, KernelBinaryReferenceValue, KernelLayerData,
-        KernelLayerEndorsements, KernelLayerReferenceValues, OakContainersData,
-        OakContainersEndorsements, OakContainersReferenceValues, OakRestrictedKernelData,
-        OakRestrictedKernelEndorsements, OakRestrictedKernelReferenceValues, ReferenceValues,
-        RootLayerData, RootLayerEndorsements, RootLayerEvidence, RootLayerReferenceValues,
-        SkipVerification, SystemLayerData, SystemLayerEndorsements, SystemLayerReferenceValues,
-        TcbVersion, TeePlatform, TextReferenceValue, TransparentReleaseEndorsement,
+        ContainerLayerExpectedValues, ContainerLayerReferenceValues, Endorsements, Evidence,
+        ExpectedDigests, ExtractedEvidence, FakeAttestationReport, HexDigests,
+        InsecureReferenceValues, IntelTdxAttestationReport, IntelTdxReferenceValues,
+        KernelAttachment, KernelBinaryReferenceValue, KernelLayerData, KernelLayerEndorsements,
+        KernelLayerReferenceValues, OakContainersData, OakContainersEndorsements,
+        OakContainersReferenceValues, OakRestrictedKernelData, OakRestrictedKernelEndorsements,
+        OakRestrictedKernelReferenceValues, ReferenceValues, RootLayerData, RootLayerEndorsements,
+        RootLayerEvidence, RootLayerReferenceValues, SkipVerification, SystemLayerData,
+        SystemLayerEndorsements, SystemLayerReferenceValues, TcbVersion, TeePlatform,
+        TextReferenceValue, TransparentReleaseEndorsement,
     },
     HexDigest, RawDigest,
 };
@@ -619,21 +620,41 @@ fn verify_container_layer(
     endorsements: Option<&ContainerLayerEndorsements>,
     reference_values: &ContainerLayerReferenceValues,
 ) -> anyhow::Result<()> {
-    verify_measurement_digest(
-        values.bundle.as_ref().context("no bundle evidence value")?,
+    let expected =
+        get_container_layer_expected_values(now_utc_millis, endorsements, reference_values)?;
+    compare_container_layer_measurement_digests(values, &expected)
+}
+
+fn get_container_layer_expected_values(
+    now_utc_millis: i64,
+    endorsements: Option<&ContainerLayerEndorsements>,
+    reference_values: &ContainerLayerReferenceValues,
+) -> anyhow::Result<ContainerLayerExpectedValues> {
+    let bundle = Some(get_expected_measurement_digest(
         now_utc_millis,
         endorsements.and_then(|value| value.binary.as_ref()),
         reference_values.binary.as_ref().context("container bundle reference value")?,
-    )
-    .context("container bundle failed verification")?;
-
-    verify_measurement_digest(
-        values.config.as_ref().context("no config evidence value")?,
+    )?);
+    let config = Some(get_expected_measurement_digest(
         now_utc_millis,
-        endorsements.and_then(|value| value.configuration.as_ref()),
-        reference_values.configuration.as_ref().context("no configuration reference value")?,
+        endorsements.and_then(|value| value.binary.as_ref()),
+        reference_values.binary.as_ref().context("container bundle reference value")?,
+    )?);
+    Ok(ContainerLayerExpectedValues { bundle, config })
+}
+
+fn compare_container_layer_measurement_digests(
+    values: &ContainerLayerData,
+    expected: &ContainerLayerExpectedValues,
+) -> anyhow::Result<()> {
+    compare_measurement_digest(
+        values.bundle.as_ref().context("no bundle evidence value")?,
+        expected.bundle.as_ref().context("no expected bundle value")?,
+    )?;
+    compare_measurement_digest(
+        values.config.as_ref().context("no config evidence value")?,
+        expected.config.as_ref().context("no expected config value")?,
     )
-    .context("configuration failed verification")
 }
 
 /// Verifies the measurement digest value against a reference value and an

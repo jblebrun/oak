@@ -40,3 +40,8 @@ message ExpectedDigests {
         HexDigests digests = 2;
     }
 }
+
+message ContainerLayerExpectedValues {
+  ExpectedDigests bundle = 1;
+  ExpectedDigests config = 2;
+}
