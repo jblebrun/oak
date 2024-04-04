@@ -257,6 +257,12 @@ oci_pull(
     platforms = ["linux/amd64"],
 )
 
+oci_pull(
+    name = "oak_containers_sysimage_base",
+    digest = "sha256:41873719d357b14408dfb5b07a56a2198fd04e973e8cfe9fd7744236d1b9bc87",
+    image = "europe-west2-docker.pkg.dev/oak-ci/oak-containers-sysimage-base/oak-containers-sysimage-base",
+)
+
 load("@//bazel:repositories.bzl", "oak_toolchain_repositories")
 
 oak_toolchain_repositories()
