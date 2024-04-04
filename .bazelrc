@@ -1,7 +1,7 @@
 # Bazel build defaults.
 # incompatible_enable_cc_toolchain_resolution:
 #   Should not be needed after Bazel 7.0 is released.
-# cxxopt='-std=c++17': 
+# cxxopt='-std=c++17':
 #   Build C++ targets using C++17.
 #   <https://stackoverflow.com/questions/40260242/how-to-set-c-standard-version-when-build-with-bazel>
 # --host_cxxopt='-std=c++17'
@@ -18,3 +18,6 @@ build:clang-tidy --@bazel_clang_tidy//:clang_tidy_config=//:clang_tidy_config
 
 # Use nightly rustc by default
 build --@rules_rust//rust/toolchain/channel=nightly
+
+
+common --credential_helper=europe-west2-docker.pkg.dev=%workspace%/oak_containers_system_image/creds_helper.sh
